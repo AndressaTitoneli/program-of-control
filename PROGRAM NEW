@@ -1,0 +1,75 @@
+Public Class Form1lblcredito
+    Dim credito, debito, saldo As Double
+
+
+    Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
+
+    End Sub
+
+    Private Sub btnadd_Click(sender As Object, e As EventArgs) Handles btnadd.Click
+        dgvlanc.Rows.Insert(0, txtdesc.Text, cmbtipo.Text, txtvalor.Text, cmbcategoria.Text, txtdata.Text)
+        If cmbtipo.SelectedIndex = 0 Then
+            credito = credito + txtvalor.Text
+            lblcredito.Text = credito
+
+        End If
+        If cmbtipo.SelectedIndex = 1 Then
+            debito = debito + txtvalor.Text
+            lbldebito.Text = debito
+        End If
+
+        saldo = credito - debito
+        lblsaldo.Text = saldo
+
+
+        If saldo < 0 Then
+            lblsaldo.BackColor = Color.Red
+        Else
+            lblsaldo.BackColor = Color.Blue
+            lblsaldo.ForeColor = Color.White
+        End If
+
+
+        txtdesc.Clear()
+        txtdata.Clear()
+        txtvalor.Clear()
+        cmbcategoria.SelectedIndex = -1
+        cmbtipo.SelectedItem = -1
+
+
+
+
+    End Sub
+
+   
+    Private Sub btnremover_Click(sender As Object, e As EventArgs) Handles btnremover.Click
+
+        Dim valor As Double
+        Dim tipo As String
+
+        Try
+            tipo = dgvlanc.Rows(dgvlanc.CurrentRow.Index).Cells(1).Value.ToString
+            valor = dgvlanc.Rows(dgvlanc.CurrentRow.Index).Cells(2).Value.ToString
+            If tipo = "CREDITO" Then
+                credito = credito - valor
+                lblcredito.Text = credito
+            Else
+                debito = debito - valor
+                lbldebito.Text = debito
+            End If
+
+            saldo = credito - debito
+            lblsaldo.Text = saldo
+            dgvlanc.Rows.RemoveAt(dgvlanc.SelectedRows(0).Index)
+
+
+        Catch ex As Exception
+            MsgBox("Nenhum registro foi selecionado", MsgBoxStyle.Critical, "erro  ao excluir")
+
+        End Try
+    End Sub
+
+    Private Sub Form1lblcredito_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+End Class
